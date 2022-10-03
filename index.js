@@ -17,13 +17,13 @@ function onMessage(ws, data) {
 
     const parsedData = JSON.parse(data);
 
-    if(parsedData.eventType === "pve"){
-        pveHandler(ws, parsedData);
-    } 
+    // if(parsedData.eventType === "pve"){
+    //     pveHandler(ws, parsedData);
+    // } 
 
-    if(parsedData.eventType === "pvp"){
-        pvpHandler(ws, parsedData);
-    } 
+    // if(parsedData.eventType === "pvp"){
+    //     pvpHandler(ws, parsedData);
+    // } 
     console.log("XX: ", parsedData);
     ws.send(`recebido!`);
 }
