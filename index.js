@@ -40,5 +40,8 @@ const server = express()
   wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('message', data => onMessage(ws, data));
-    ws.on('close', () => console.log('Client disconnected'));
+    ws.on('close', () => {
+        ws.send('closed');
+        console.log('Client disconnected')
+    });
   });
