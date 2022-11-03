@@ -14,18 +14,17 @@ const PORT = process.env.PORT || 3005;
 const INDEX = '/index.html';
 
 function onMessage(ws, data) {
+  const parsedData = JSON.parse(data);
 
-    const parsedData = JSON.parse(data);
+  // if(parsedData.eventType === "pve"){
+  //     pveHandler(ws, parsedData);
+  // } 
 
-    // if(parsedData.eventType === "pve"){
-    //     pveHandler(ws, parsedData);
-    // } 
-
-    // if(parsedData.eventType === "pvp"){
-    //     pvpHandler(ws, parsedData);
-    // } 
-    console.log("XX: ", parsedData);
-    ws.send(`recebido!`);
+  // if(parsedData.eventType === "pvp"){
+  //     pvpHandler(ws, parsedData);
+  // }
+  console.log("XX: ", parsedData);
+  ws.send(`recebido!`);
 }
 
 const server = express()
