@@ -13,18 +13,35 @@ const express = require('express');
 const PORT = process.env.PORT || 3005;
 const INDEX = '/index.html';
 
+const pveHandler = require('./src/handlers/pveHandler');
+
+
+// BATTLE CONTINUOUS DATA
+
+const pvpLookingPlayers = [];
+
+const pvpActiveBattlePlayers = [];
+
+const pvpActiveBattle = [];
+
+const pveActiveBattle = [];
+
+// -----------------
+
 function onMessage(ws, data) {
   const parsedData = JSON.parse(data);
 
-  // if(parsedData.eventType === "pve"){
-  //     pveHandler(ws, parsedData);
-  // } 
+  if(parsedData.actionType === "pve-battle-action"){
+    console.log("foi");
+    pveHandler(ws, parsedData, pveActiveBattle);
+  } else {
+    ws.send(JSON.stringify({ data: "erro" }));
+  }
 
   // if(parsedData.eventType === "pvp"){
   //     pvpHandler(ws, parsedData);
   // }
-  console.log("XX: ", parsedData);
-  ws.send(`recebido!`);
+  
 }
 
 const server = express()

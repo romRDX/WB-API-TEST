@@ -1,32 +1,62 @@
-const attackAction = require("../actions/attackActions")
+const attackAction = require("../actions/attackActions");
+const apiWB = require("../wbApi/axios");
 
-const pveHandler = (ws, data) => {
+const pveHandler = (ws, battleData, battleState) => {
 
-    const attackerCharacter = {
-        id: 123,
-        DMG: 50,
+    const stateIndex = battleState.findIndex((state) => state.battleId == battleData.battleId);
 
-    };
+    if(stateIndex !== -1){
+        // console.log("ACHEI: ", battleState[stateIndex]);
+    } else {
+        // console.log("ASD: ", battleData);
 
-    const receiverCharacter = {
-        id: 321,
-        DEF: 30,
-    };
+        let playerCharacter;
 
-    const skill = {
-        baseDamage: 15,
-        cost: 5,
-    };
+        apiWB.get('/characters', {
+            params: {
+                userId: battleData.playerId
+            }
+        }).then((resp) => {
+            playerCharacter = resp.data.userCharacters.find((char) => char.id == battleData.characterId)
+            // console.log("YOUR CHAR: ", playerCharacter);
+        });
 
-    let x;
+        const characterState = {
+            ...playerCharacter,
+            HP: "",
+            buffs: [],
+            debuffs: [],
+        }
 
-    if(data.action == "attack"){
-        const attackResult = attackAction(attackerCharacter, receiverCharacter, skill);
-        x = { respType: "attack result", type: data.type, finalDamage: attackResult };
-        console.log("PVE: ", attackResult)
+        battleState.push(
+            {
+                battleId: battleData.battleId,
+                playerId: battleData.playerId,
+                characterId: battleData.characterId,
+                monsterId: battleData.monsterId,
+                characterData: characterState,
+                characterInitialData: characterState,
+                monsterData: "",
+                monsterInitialData: "",
+                turnsData: [[battleData.playerId, battleData.skillId]],
+            },
+        )
+        console.log("CRIA NOVO");
     }
+
+    // console.log("BATTLE STATE: ", battleState);
+
+
+
+    // actionType: "pve-battle-action", skillId, battleId, playerId: authData.id, characterId: selectedCharacter.id
+
+    // apiWB.get('/skills', {
+    //     params: { skillId: 1 }
+    // }).then((resp) => {
+    //     console.log(resp.data);
+    //     // ws.send(JSON.stringify(resp.data));
+    // }); 
     
-    ws.send(JSON.stringify(x));
 }
 
 module.exports = pveHandler;
