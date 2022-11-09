@@ -5,7 +5,6 @@ const test = 'http://localhost:3001/';
 
 const apiWB = axios.create({
     baseURL: test, // //process.env.NEXT_PUBLIC_CADASTRO_API_HOST
-    
 });
 
 module.exports = apiWB;

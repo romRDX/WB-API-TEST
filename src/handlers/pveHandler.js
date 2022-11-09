@@ -1,32 +1,94 @@
-const attackAction = require("../actions/attackActions");
+const attackAction = require("../actions/monstersActions");
+const getTotalAtributes = require("../func/getTotalAtributes");
 const apiWB = require("../wbApi/axios");
 
-const pveHandler = (ws, battleData, battleState) => {
+const pveHandler = async (ws, battleData, battleState) => {
 
     const stateIndex = battleState.findIndex((state) => state.battleId == battleData.battleId);
 
     if(stateIndex !== -1){
         // console.log("ACHEI: ", battleState[stateIndex]);
+
+        console.log("ACHEI: ", battleData.turn);
+
+        if(battleData.turn){
+            
+        }
+        
     } else {
-        // console.log("ASD: ", battleData);
+        console.log("NÃO ACHEI");
 
         let playerCharacter;
+        let monster;
+        let totalPlayerAtributes;
+        let totalMonsterAtributes;
 
-        apiWB.get('/characters', {
-            params: {
-                userId: battleData.playerId
+        const getCharactersData = async () => {
+            try {
+                const resp = await apiWB.get('/characters', {
+                    params: {
+                        userId: battleData.playerId
+                    }
+                });
+
+                return resp;
+            } catch (err){
+                console.log("ERROR: ", err);
             }
-        }).then((resp) => {
-            playerCharacter = resp.data.userCharacters.find((char) => char.id == battleData.characterId)
-            // console.log("YOUR CHAR: ", playerCharacter);
-        });
+        };
 
+        const playerCharactersData = await getCharactersData();
+        const selectedCharacter = playerCharactersData.data.userCharacters.find((char) => char.id == battleData.characterId);
+        playerCharacter = selectedCharacter;
+        totalPlayerAtributes = getTotalAtributes(selectedCharacter);
+
+        console.log('RESP-DATA1: ', playerCharacter);
+        console.log('RESP-DATA2: ', totalPlayerAtributes);
+
+        // apiWB.get('/characters', {
+        //     params: {
+        //         userId: battleData.playerId
+        //     }
+        // }).then((resp) => {
+            // const playerCharacterData = resp.data.userCharacters.find((char) => char.id == battleData.characterId)
+            // playerCharacter = playerCharacterData;
+            // totalPlayerAtributes = getTotalAtributes(playerCharacterData);
+            // console.log("YOUR CHAR: ", resp.data.userCharacters);
+        // });
+
+        const getMonstersData = async () => {
+            try {
+                const resp = await apiWB.get('/monsters', {
+                    params: {
+                        monsterId: battleData.monsterId
+                    }
+                });
+
+                return resp;
+            } catch (err){
+                console.log("ERROR: ", err);
+            }
+        };
+
+        const monsterData = await getMonstersData();
+
+        monster = monsterData.data.monsters.find((mons) => mons.id == battleData.monsterId);
+        
         const characterState = {
             ...playerCharacter,
-            HP: "",
+            HP: Math.round((totalPlayerAtributes.total.CON*2.5)+900),
             buffs: [],
             debuffs: [],
         }
+
+        const monsterState = {
+            ...monster,
+            HP:  Math.round((monster.attributes.CON*2.5)+900),
+            buffs: [],
+            debuffs: [],
+        }
+
+        console.log('MS: ', monster);
 
         battleState.push(
             {
@@ -36,12 +98,12 @@ const pveHandler = (ws, battleData, battleState) => {
                 monsterId: battleData.monsterId,
                 characterData: characterState,
                 characterInitialData: characterState,
-                monsterData: "",
-                monsterInitialData: "",
+                monsterData: monsterState,
+                monsterInitialData: monsterState,
                 turnsData: [[battleData.playerId, battleData.skillId]],
             },
         )
-        console.log("CRIA NOVO");
+        // console.log("CRIA NOVO");
     }
 
     // console.log("BATTLE STATE: ", battleState);
