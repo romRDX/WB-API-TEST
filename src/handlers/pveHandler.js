@@ -1,5 +1,6 @@
 const attackAction = require("../actions/monstersActions");
-const getTotalAtributes = require("../func/getTotalAtributes");
+const calculateAction = require("../utils/calculateAction");
+const getTotalAtributes = require("../utils/getTotalAtributes");
 const apiWB = require("../wbApi/axios");
 
 const pveHandler = async (ws, battleData, battleState) => {
@@ -9,14 +10,30 @@ const pveHandler = async (ws, battleData, battleState) => {
     if(stateIndex !== -1){
         // console.log("ACHEI: ", battleState[stateIndex]);
 
-        console.log("ACHEI: ", battleData.turn);
+        // console.log("ACHEI2: ", battleData);
 
-        if(battleData.turn){
-            
+        const results = calculateAction(
+            battleState[stateIndex].characterData.skills.find((skill) => skill.id == battleData.skillId),
+            battleState[stateIndex].characterData,
+            battleState[stateIndex].monsterData,
+        );
+
+        console.log("1: ", results);
+
+        battleState[stateIndex].monsterData.HP = results.targetHP;
+        battleState[stateIndex].currentTurn = battleData.turn+1;
+
+        // if(results.targetHP)
+
+        const response = {
+            battleLog: "null?",
+            battleData: battleState[stateIndex],
         }
-        
+
+        ws.send(JSON.stringify(response));
+
     } else {
-        console.log("NÃO ACHEI");
+        // console.log("NÃO ACHEI");
 
         let playerCharacter;
         let monster;
@@ -42,8 +59,8 @@ const pveHandler = async (ws, battleData, battleState) => {
         playerCharacter = selectedCharacter;
         totalPlayerAtributes = getTotalAtributes(selectedCharacter);
 
-        console.log('RESP-DATA1: ', playerCharacter);
-        console.log('RESP-DATA2: ', totalPlayerAtributes);
+        // console.log('RESP-DATA1: ', playerCharacter);
+        // console.log('RESP-DATA2: ', totalPlayerAtributes);
 
         // apiWB.get('/characters', {
         //     params: {
@@ -90,20 +107,27 @@ const pveHandler = async (ws, battleData, battleState) => {
 
         console.log('MS: ', monster);
 
-        battleState.push(
-            {
-                battleId: battleData.battleId,
-                playerId: battleData.playerId,
-                characterId: battleData.characterId,
-                monsterId: battleData.monsterId,
-                characterData: characterState,
-                characterInitialData: characterState,
-                monsterData: monsterState,
-                monsterInitialData: monsterState,
-                turnsData: [[battleData.playerId, battleData.skillId]],
-            },
-        )
-        // console.log("CRIA NOVO");
+        const battleStateNewItem = {
+            battleId: battleData.battleId,
+            playerId: battleData.playerId,
+            characterId: battleData.characterId,
+            monsterId: battleData.monsterId,
+            characterData: characterState,
+            characterInitialData: characterState,
+            monsterData: { ...monsterState },
+            monsterInitialData: { ...monsterState },
+            currentTurn: 1,
+            turnsData: [[battleData.playerId, battleData.skillId]],
+        }
+
+        battleState.push(battleStateNewItem);
+
+        const response = {
+            battleLog: "null?",
+            battleData: battleState[battleState.length-1],
+        }
+
+        ws.send(JSON.stringify(response));
     }
 
     // console.log("BATTLE STATE: ", battleState);
