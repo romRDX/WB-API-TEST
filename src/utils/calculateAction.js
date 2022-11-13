@@ -1,20 +1,25 @@
+const getTotalAttributes = require("./getTotalAttributes");
+
 const calculateAction = (action, user, target) => {
 
-    
     let results = {
-        targetHP: null,
+        targetHP: target.HP,
         targetEffects: [],
     }
+
+    let calculatedUser = getTotalAttributes(user);
+    let calculatedTarget = getTotalAttributes(target);
+
+    console.log("ASD1: ", calculatedUser);
+    console.log("ASD2: ", calculatedTarget);
+    console.log("ASD3: ", action);
 
     if(action.type.includes("DAMAGE")){
         const userBaseDamage = (user.attributes.STR*0.38)+40;
         const targeDefMultiplier = (100-((target.attributes.TOU*0.062)+5))/100;
 
-        // console.log("1: ", targeDefMultiplier);
-        // console.log("2: ", userBaseDamage*targeDefMultiplier);
-        // console.log("3: ", target.HP);
-        // console.log("4: ", target.HP - userBaseDamage*targeDefMultiplier);
-
+        console.log("2: ", target.HP);
+        
         results.targetHP = target.HP - userBaseDamage*targeDefMultiplier
     }
     

@@ -3,12 +3,12 @@ const monstersActions = [
         id: 1,
         actions: (turn) => {
             
-            if(turn == 1 || turn == 2 || turn > 6){
+            if(turn == 1 || turn == 2 || turn == 5 || turn > 6){
                 
                 return {
                     energy: 0,
-                    value: 50,
-                    type: ["damage"],
+                    value: 1.4,
+                    type: ["DAMAGE"],
                     cooldown: 0,
                     effect: null,
                 };
@@ -19,8 +19,8 @@ const monstersActions = [
                 return {
                     id: 2,
                     energy: 0,
-                    value: 30,
-                    type: ["damage"],
+                    value: 1.2,
+                    type: ["DAMAGE", "DEBUFF"],
                     cooldown: 0,
                     effect: { type: "DMG", value: 20, turns: 3 }
                 };
