@@ -32,7 +32,6 @@ function onMessage(ws, data) {
   const parsedData = JSON.parse(data);
 
   if(parsedData.actionType === "pve-battle-action"){
-    console.log("foi");
     pveHandler(ws, parsedData, pveActiveBattle);
   } else {
     ws.send(JSON.stringify({ data: "erro" }));

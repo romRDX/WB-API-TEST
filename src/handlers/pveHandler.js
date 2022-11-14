@@ -16,6 +16,8 @@ const pveHandler = async (ws, battleData, battleState) => {
             battleState[stateIndex].monsterData,
         );
 
+        console.log("ENERGY: ", battleState[stateIndex].characterData.energy);
+
         battleState[stateIndex].monsterData.HP = playerDamageResults.targetHP;
         
         const currentMonsterAction = monstersActions.find((ma) => ma.id == battleState[stateIndex].monsterData.id);
@@ -28,8 +30,6 @@ const pveHandler = async (ws, battleData, battleState) => {
         );
 
         battleState[stateIndex].characterData.HP = monsterDamageResults.targetHP;
-
-        // console.log("1: ", monsterDamageResults);
 
         battleState[stateIndex].currentTurn = battleData.turn+1;
 
@@ -82,6 +82,7 @@ const pveHandler = async (ws, battleData, battleState) => {
         const characterState = {
             ...playerCharacter,
             HP: Math.round((totalPlayerAttributes.total.CON*2.5)+900),
+            energy: Math.round((totalPlayerAttributes.total.INT*0.262)+(totalPlayerAttributes.total.CON*0.13)+20),
             buffs: [],
             debuffs: [],
         }
@@ -114,7 +115,10 @@ const pveHandler = async (ws, battleData, battleState) => {
             battleState[battleState.length - 1].monsterData,
         );
 
+        console.log("ENERGY: ", playerDamageResults);
+
         battleState[battleState.length - 1].monsterData.HP = playerDamageResults.targetHP;
+        battleState[battleState.length - 1].characterData.energy = playerDamageResults.userEnergy;
 
         const currentMonsterAction = monstersActions.find((ma) => ma.id == battleState[battleState.length - 1].monsterData.id)
         
@@ -125,8 +129,6 @@ const pveHandler = async (ws, battleData, battleState) => {
             battleState[battleState.length - 1].monsterData,
             battleState[battleState.length - 1].characterData,
         );
-
-        // console.log("XX: ", y);
 
         battleState[battleState.length - 1].characterData.HP = monsterDamageResults.targetHP;
 
