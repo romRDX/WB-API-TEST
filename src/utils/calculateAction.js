@@ -8,14 +8,11 @@ const calculateAction = (action, user, target) => {
         targetEffects: [],
     }
 
-    console.log("ASD1: ", results.userEnergy);
-    console.log("ASD2: ", action.energy);
-        // console.log("ASD3: ", action);
+    // MECANICA ENERGIA
+    // if(results.userEnergy > action.energy){
 
-    if(results.userEnergy > action.energy){
-
-        let calculatedUser = getTotalAttributes(user);
-        let calculatedTarget = getTotalAttributes(target);
+        // let calculatedUser = getTotalAttributes(user);
+        // let calculatedTarget = getTotalAttributes(target);
 
         results.userEnergy -= action.energy;
 
@@ -37,9 +34,11 @@ const calculateAction = (action, user, target) => {
         if(action.type.includes("DEBUFF")){
             
         }
-    } else {
-        console.log("NO ENERGY");
-    }
+
+    // MECANICA ENERGIA
+    // } else {
+    //     console.log("NO ENERGY");
+    // }
 
     return results;
 };

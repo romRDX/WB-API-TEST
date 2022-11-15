@@ -5,7 +5,7 @@ const getTotalAttributes = require("../utils/getTotalAttributes");
 const apiWB = require("../wbApi/axios");
 
 const pveHandler = async (ws, battleData, battleState) => {
-
+    console.log("ASD: ", battleData);
     const stateIndex = battleState.findIndex((state) => state.battleId == battleData.battleId);
 
     if(stateIndex !== -1){
@@ -16,9 +16,8 @@ const pveHandler = async (ws, battleData, battleState) => {
             battleState[stateIndex].monsterData,
         );
 
-        console.log("ENERGY: ", battleState[stateIndex].characterData.energy);
-
         battleState[stateIndex].monsterData.HP = playerDamageResults.targetHP;
+        battleState[stateIndex].characterData.energy = playerDamageResults.userEnergy;
         
         const currentMonsterAction = monstersActions.find((ma) => ma.id == battleState[stateIndex].monsterData.id);
         const monsterAction = currentMonsterAction.actions(battleState[stateIndex].currentTurn);
@@ -115,7 +114,7 @@ const pveHandler = async (ws, battleData, battleState) => {
             battleState[battleState.length - 1].monsterData,
         );
 
-        console.log("ENERGY: ", playerDamageResults);
+        // console.log("ENERGY: ", playerDamageResults);
 
         battleState[battleState.length - 1].monsterData.HP = playerDamageResults.targetHP;
         battleState[battleState.length - 1].characterData.energy = playerDamageResults.userEnergy;
