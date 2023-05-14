@@ -6,11 +6,13 @@ const monstersActions = [
             if(turn == 1 || turn == 2 || turn == 5 || turn > 6){
                 
                 return {
+                    id: 1,
                     energy: 0,
                     value: 1.4,
                     type: ["DAMAGE"],
                     cooldown: 0,
                     effect: null,
+                    name: "Grandes garras",
                 };
             }
 
@@ -22,7 +24,8 @@ const monstersActions = [
                     value: 1.2,
                     type: ["DAMAGE", "DEBUFF"],
                     cooldown: 0,
-                    effect: { type: "DMG", value: 20, turns: 3 }
+                    effect: { type: "DMG", value: 20, turns: 3 },
+                    name: "Garras empoderadoras",
                 };
             }
 
@@ -32,9 +35,10 @@ const monstersActions = [
                     id: 3,
                     energy: 0,
                     value: 100,
-                    type: ["heal"],
+                    type: ["HEAL"],
                     cooldown: 0,
                     effect: null,
+                    name: "Vigor ursino",
                 };
             }
         },

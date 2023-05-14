@@ -11,6 +11,7 @@ function onMessage(ws, data) {
     const parsedData = JSON.parse(data);
 
     if(parsedData.eventType === "pve"){
+        console.log("ASDASDADASDASDASDASDASD");
         pveHandler(ws, parsedData);
     } 
 
@@ -33,7 +34,6 @@ function corsValidation(origin) {
 
 function verifyClient(info, callback) {
     if(!corsValidation(info.origin)) return callback(false);
-    console.log("RR: ", info);
     
     const token = info.req.url.split('token=')[1];
     

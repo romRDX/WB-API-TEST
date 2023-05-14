@@ -1,44 +1,84 @@
 const getTotalAttributes = require("./getTotalAttributes");
 
-const calculateAction = (action, user, target) => {
-
+const calculateAction = (action, currentUser, initialUser, currentTarget, initialTarget) => {
+    
     let results = {
-        targetHP: target.HP,
-        userEnergy: user.energy || 500,
-        targetEffects: [],
+        noEnergy: false,
+        log: "",
+    }
+
+    const effects = {
+        DAMAGE: () => {
+            const userBaseDamage = (currentUser.attributes.STR*0.38)+40;
+            const targetDefMultiplier = (100-((currentTarget.attributes.TOU*0.062)+5))/100;
+            console.log("DMG: ", action);
+            const finalDamage = (userBaseDamage*action.value)*targetDefMultiplier;
+            results.log = `${currentUser.name} causou ${Math.round(finalDamage)} de dano usando ${action.name} em ${currentTarget.name}`;
+            
+            currentTarget.HP = currentTarget.HP - finalDamage
+        },
+        HEAL: () => {
+            const finalHealValue = currentUser.attributes.CON*action.value;
+            console.log("HEAL: ", action);
+            results.log = `${currentUser.name} curou a si mesmo em ${finalHealValue} usando ${action.name}`;
+
+            if(currentUser.HP + finalHealValue > initialUser.HP){
+                currentUser.HP = initialUser.HP;
+            } else {
+                currentUser.HP = currentUser.HP + finalHealValue;
+            }
+        },
+        DEBUFF: () => {
+            console.log("DBUFF: ", action);
+        },
+        BUFF: () => {
+            console.log("BUFF: ", action);
+        },
     }
 
     // MECANICA ENERGIA
-    // if(results.userEnergy > action.energy){
+    if(currentUser.energy > action.energy){
 
-        // let calculatedUser = getTotalAttributes(user);
-        // let calculatedTarget = getTotalAttributes(target);
+        currentUser.energy -= action.energy;
 
-        results.userEnergy -= action.energy;
+        action.type.forEach((type) => {
+            effects[type]();
+        })
 
-        if(action.type.includes("DAMAGE")){
-            const userBaseDamage = (user.attributes.STR*0.38)+40;
-            const targeDefMultiplier = (100-((target.attributes.TOU*0.062)+5))/100;
+        // if(action.type.includes("DAMAGE")){
+        //     const userBaseDamage = (currentUser.attributes.STR*0.38)+40;
+        //     const targetDefMultiplier = (100-((currentTarget.attributes.TOU*0.062)+5))/100;
+        //     console.log("ASD: ", action);
+        //     const finalDamage = (userBaseDamage*action.value)*targetDefMultiplier;
+        //     results.log = `${currentUser.name} causou ${Math.round(finalDamage)} de dano usando ${action.name} em ${currentTarget.name}`;
             
-            results.targetHP = target.HP - userBaseDamage*targeDefMultiplier
-        }
+        //     currentTarget.HP = currentTarget.HP - finalDamage
+        // }
         
-        if(action.type.includes("HEAL")){
+        // if(action.type.includes("HEAL")){
+        //     const finalHealValue = currentUser.attributes.CON*action.value;
             
-        }
+        //     results.log = `${currentUser.name} curou a si mesmo em ${finalHealValue} usando ${action.name}`;
 
-        if(action.type.includes("BUFF")){
-            
-        }
+        //     if(currentUser.HP + finalHealValue > initialUser.HP){
+        //         currentUser.HP = initialUser.HP;
+        //     } else {
+        //         currentUser.HP = currentUser.HP + finalHealValue;
+        //     }
+        // }
 
-        if(action.type.includes("DEBUFF")){
+        // if(action.type.includes("BUFF")){
             
-        }
+        // }
+
+        // if(action.type.includes("DEBUFF")){
+            
+        // }
 
     // MECANICA ENERGIA
-    // } else {
-    //     console.log("NO ENERGY");
-    // }
+    } else {
+        results.noEnergy = true;
+    }
 
     return results;
 };
