@@ -82,8 +82,6 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
 
             console.log("ASD1: ", battleStateNewItem.battleId);
             // console.log("ASD2: ", enemyPlayer); 
-            // FUNCIONOU A REQUEST DOS DADOS DOS JOGADORES, AGORA É ENVIAR PARA A OUTRA API TODOS OS DADOS JUNTOS
-            // E DEPOIS ENVIAR PARA O FRONT PARA MUDAR PARA A BATALHA
 
             pvpActiveBattle.push(battleStateNewItem);
 
@@ -92,6 +90,7 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
                 battleData: { battleId: battleStateNewItem.battleId }
             }
 
+            // apenas cria o registro da batalha
             apiWB.post("/pvp-battle-start", {
                     params: JSON.stringify({ battleData: battleStateNewItem })
                 }

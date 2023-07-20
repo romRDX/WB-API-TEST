@@ -10,6 +10,8 @@ function onMessage(ws, data) {
 
     const parsedData = JSON.parse(data);
 
+    console.log("PARSED-DATA: ", parsedData);
+
     if(parsedData.eventType === "pve"){
         console.log("ASDASDADASDASDASDASDASD");
         pveHandler(ws, parsedData);

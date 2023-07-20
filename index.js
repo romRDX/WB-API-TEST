@@ -18,6 +18,7 @@ const pveBattleStartHandler = require('./src/handlers/pve/pveBattleStartHandler'
 const pveBattleEscapeHandler = require('./src/handlers/pve/pveBattleEscapeHandler');
 const pveBattleTurnEndHandler = require('./src/handlers/pve/pveBattleTurnEndHandler');
 const pvpMatchMakingQueueHandler = require('./src/handlers/pvp/pvpMatchMakingQueueHandler');
+const pvpBattleReadyHandler = require('./src/handlers/pvp/pvpBattleReadyHandler');
 
 
 // BATTLE CONTINUOUS DATA
@@ -44,7 +45,9 @@ function onMessage(ws, data) {
     ["pve-battle-start"]: () => pveBattleStartHandler(ws, parsedData, pveActiveBattle),
     ["pve-battle-action"]: () => pveBattleActionHandler(ws, parsedData, pveActiveBattle),
     ["pve-battle-end-turn"]: () => pveBattleTurnEndHandler(ws, parsedData, pveActiveBattle),
+
     ["pvp-match-making-queue"]: () => pvpMatchMakingQueueHandler(ws, parsedData),
+    ["pvp-battle-ready"]: () => pvpBattleReadyHandler(ws, parsedData, pvpActiveBattle),
   }
 
   // console.log("CLIENTS: ", wss.clients);
