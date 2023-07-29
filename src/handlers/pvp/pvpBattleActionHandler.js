@@ -11,6 +11,9 @@ const pveBattleActionHandler = async (ws, battleData, battleState) => {
         battleState[stateIndex].monsterInitialData,
     );
     
+    // FRONT JÁ MOSTRA TODAS AS INFORMAÇÕES EM TELA
+    // AGORA FALTA FAZER A ACTION FUNCIONAR SENDO QUE TEMOS
+    // { players: [ {}, {}] }
 
     if(playerDamageResults.noEnergy){
         console.log("NO ENERGY!");

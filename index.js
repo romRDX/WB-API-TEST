@@ -48,6 +48,7 @@ function onMessage(ws, data) {
 
     ["pvp-match-making-queue"]: () => pvpMatchMakingQueueHandler(ws, parsedData),
     ["pvp-battle-ready"]: () => pvpBattleReadyHandler(ws, parsedData, pvpActiveBattle),
+    ["pvp-battle-action"]: () => pveBattleActionHandler(ws, parsedData, pveActiveBattle),
   }
 
   // console.log("CLIENTS: ", wss.clients);

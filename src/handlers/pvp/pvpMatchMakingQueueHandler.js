@@ -57,14 +57,28 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
 
             const battleStateNewItem = {
                 battleId: uuidv4(),
-                player1Id: battleData.playerId,
-                player1CharacterId: battleData.characterId,
-                player1CharacterData: { ...characterState },
-                player1CharacterInitialData: { ...characterState },
-                player2Id: enemyPlayer.playerId,
-                player2CharacterId: enemyPlayer.characterId,
-                player2CharacterData: { ...enemyCharacterState },
-                player2CharacterInitialData: { ...enemyCharacterState },
+                // player1Id: battleData.playerId,
+                // player1CharacterId: battleData.characterId,
+                // player1CharacterData: { ...characterState },
+                // player1CharacterInitialData: { ...characterState },
+                // player2Id: enemyPlayer.playerId,
+                // player2CharacterId: enemyPlayer.characterId,
+                // player2CharacterData: { ...enemyCharacterState },
+                // player2CharacterInitialData: { ...enemyCharacterState },
+                players: [
+                    {
+                        playerId: battleData.playerId,
+                        characterId: battleData.characterId,
+                        characterData:  { ...characterState },
+                        characterInitialData: { ...characterState },
+                    },
+                    {
+                        playerId: enemyPlayer.playerId,
+                        characterId: enemyPlayer.characterId,
+                        characterData:  { ...enemyCharacterState },
+                        characterInitialData:  { ...enemyCharacterState },
+                    }
+                ],
                 currentTurn: 1,
                 turnsData: {
                     currentTurn: 1,
