@@ -17,18 +17,20 @@ const pveBattleActionHandler = require('./src/handlers/pve/pveBattleActionHandle
 const pveBattleStartHandler = require('./src/handlers/pve/pveBattleStartHandler');
 const pveBattleEscapeHandler = require('./src/handlers/pve/pveBattleEscapeHandler');
 const pveBattleTurnEndHandler = require('./src/handlers/pve/pveBattleTurnEndHandler');
+
 const pvpMatchMakingQueueHandler = require('./src/handlers/pvp/pvpMatchMakingQueueHandler');
 const pvpBattleReadyHandler = require('./src/handlers/pvp/pvpBattleReadyHandler');
-
+const pvpBattleActionHandler = require('./src/handlers/pvp/pvpBattleActionHandler');
 
 // BATTLE CONTINUOUS DATA
 
 global.pvpMatchMakingQueue = [];
 global.pvpActiveBattle = [];
+global.pvpActiveBattle2 = new Set();
 
 // var pvpMatchMakingQueue = [];
 
-const pvpActiveBattlePlayers = [];
+// const pvpActiveBattlePlayers = [];
 
 // const pvpActiveBattle = [];
 
@@ -48,10 +50,16 @@ function onMessage(ws, data) {
 
     ["pvp-match-making-queue"]: () => pvpMatchMakingQueueHandler(ws, parsedData),
     ["pvp-battle-ready"]: () => pvpBattleReadyHandler(ws, parsedData, pvpActiveBattle),
-    ["pvp-battle-action"]: () => pveBattleActionHandler(ws, parsedData, pveActiveBattle),
+    ["pvp-battle-action"]: () => pvpBattleActionHandler(ws, parsedData, pvpActiveBattle),
   }
 
   // console.log("CLIENTS: ", wss.clients);
+  // const response = {
+  //   teste: "RDX"
+  // }
+
+  // funciona para fazer broadcast
+  // wss.clients.forEach((client) => ( client.send(JSON.stringify(response))) );
 
   handlers[parsedData.actionType]();
 

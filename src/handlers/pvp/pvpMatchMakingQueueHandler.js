@@ -54,6 +54,9 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
                 buffs: [],
                 debuffs: [],
             }
+            
+            const playerData = pvpMatchMakingQueue.find((player) => player.playerId === battleData.playerId);
+            
 
             const battleStateNewItem = {
                 battleId: uuidv4(),
@@ -68,12 +71,14 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
                 players: [
                     {
                         playerId: battleData.playerId,
+                        playerClient: null,
                         characterId: battleData.characterId,
                         characterData:  { ...characterState },
                         characterInitialData: { ...characterState },
                     },
                     {
                         playerId: enemyPlayer.playerId,
+                        playerClient: null,
                         characterId: enemyPlayer.characterId,
                         characterData:  { ...enemyCharacterState },
                         characterInitialData:  { ...enemyCharacterState },
@@ -94,10 +99,8 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
                 ],
             }
 
-            console.log("ASD1: ", battleStateNewItem.battleId);
-            // console.log("ASD2: ", enemyPlayer); 
-
             pvpActiveBattle.push(battleStateNewItem);
+            // pvpActiveBattle2.add(battleStateNewItem);
 
             const response = {
                 apiMessage: "MATCH SUCCEEDED",
@@ -109,17 +112,14 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
                     params: JSON.stringify({ battleData: battleStateNewItem })
                 }
             ).then((resp) => {
-                console.log("XX: ", resp.data);
                 if(resp.data.success){
                     enemyPlayer.client.send(JSON.stringify(response));
                     ws.send(JSON.stringify(response));
                 }
             })
-        
-            // enemyPlayer.client.send(JSON.stringify(response));
-            // ws.send(JSON.stringify(response));
             
         } else {
+            // console.log("WS-ID: ", ws)
             const newPlayer = {
                 client: ws,
                 playerId: battleData.playerId,
@@ -145,16 +145,6 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
 
         ws.send(JSON.stringify(response));
     }
-    
-    // console.log("PVP BATTLE STATE 1: ", pvpMatchMakingQueue);
-    // console.log("-------------------------------------------");
-
-    // const response = {
-    //     battleLog: "null?",
-    //     apiMessage: "BATTLE STARTED"
-    // }
-
-    // ws.send(JSON.stringify(response));
 
     return;
 }
