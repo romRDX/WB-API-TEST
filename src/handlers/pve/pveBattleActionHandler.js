@@ -11,7 +11,6 @@ const pveBattleActionHandler = async (ws, battleData, battleState) => {
         battleState[stateIndex].monsterInitialData,
     );
     
-
     if(playerDamageResults.noEnergy){
         console.log("NO ENERGY!");
     } else {

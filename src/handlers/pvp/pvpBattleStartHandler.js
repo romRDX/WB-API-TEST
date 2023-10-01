@@ -57,6 +57,9 @@ const pveBattleStartHandler = async (ws, battleData, battleState) => {
         energy: Math.round((monster.attributes.INT*0.262)+(monster.attributes.CON*0.13)+20),
     }
 
+    // const idsArray = 
+    // const firstPlayer = items[Math.floor(Math.random()*items.length)];
+
     const battleStateNewItem = {
         battleId: battleData.battleId,
         playerId: battleData.playerId,

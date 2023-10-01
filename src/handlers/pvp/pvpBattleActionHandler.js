@@ -37,17 +37,19 @@ const pveBattleActionHandler = async (ws, battleData, battleState) => {
 
         battleState[stateIndex].battleLogs.push(logData);
 
-        if(actingCharacter.characterData.HP <= 0){
-            battleState[stateIndex].battleResults = {
-                status: "lose",
-                message: "Você perdeu!",
-            };
-        }
-
+        // if(actingCharacter.characterData.HP <= 0){
+        //     battleState[stateIndex].battleResults = {
+        //         status: "lose",
+        //         message: "Você perdeu!",
+        //     };
+        // }
+// ta mandando "vitoria" para ambos os lados / mostrar quem ganhou pelo ID?
+// fazer alterações no ranking?
         if(enemyCharacter.characterData.HP <= 0){
             battleState[stateIndex].battleResults = {
-                status: "win",
-                message: "Você venceu!",
+                status: "finished",
+                winnerId: battleData.characterId,
+                loserId: battleData.enemyCharacterId,
             };
         }
     }
@@ -67,15 +69,16 @@ const pveBattleActionHandler = async (ws, battleData, battleState) => {
 
     const battle = pvpActiveBattle.find((activeBattle) => activeBattle.battleId === battleData.battleId);
 
-
     let battle2;
+
+    console.log('------------ 456');
 
     // FUNCIONA PORRA, FUNCIONAAAAAAAAAAAAAA
     pvpActiveBattle2.forEach((activeBattle) => {
         // if(activeBattle.battleId === battleData.battleId){
         //     battle2 = activeBattle;
         // }
-        console.log("ASD-1: ", activeBattle);
+
         activeBattle.client.send(JSON.stringify(response)); // xx
     });
 

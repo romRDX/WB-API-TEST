@@ -1,10 +1,7 @@
 const pvpBattleReadyHandler = async (ws, battleData, battleState) => {
     const battle = battleState.find((state) => state.battleId == battleData.battleId);
 
-    console.log('READY-1: ', battleData);
     // console.log('READY-2: ', battle);
-
-    // AMBOS PLAYERS RECEBEM ESSA MENSAGEM, TENTAR PEGAR O CLIENTE/WS E CRIAR OUTRA VAR GLOBAL PARA ARMAZENAR, OU JOGAR DENTRO DO BATTLE
 
     // const newPlayer = {
     //     client: ws,

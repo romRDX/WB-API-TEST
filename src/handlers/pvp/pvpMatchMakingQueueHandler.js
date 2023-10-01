@@ -56,10 +56,16 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
             }
             
             const playerData = pvpMatchMakingQueue.find((player) => player.playerId === battleData.playerId);
+
+            const charactersIdArray = [battleData.characterId, enemyPlayer.characterId];
             
+            const firstCharacterToAct = charactersIdArray[Math.floor(Math.random()*charactersIdArray.length)];
+
+            console.log("FIRST PLAYER: ", firstCharacterToAct);
 
             const battleStateNewItem = {
                 battleId: uuidv4(),
+                currentCharacterToAct: firstCharacterToAct,
                 // player1Id: battleData.playerId,
                 // player1CharacterId: battleData.characterId,
                 // player1CharacterData: { ...characterState },
