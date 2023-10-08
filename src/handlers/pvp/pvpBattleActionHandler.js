@@ -43,7 +43,7 @@ const pveBattleActionHandler = async (ws, battleData, battleState) => {
         //         message: "Você perdeu!",
         //     };
         // }
-// ta mandando "vitoria" para ambos os lados / mostrar quem ganhou pelo ID?
+        
 // fazer alterações no ranking?
         if(enemyCharacter.characterData.HP <= 0){
             battleState[stateIndex].battleResults = {
