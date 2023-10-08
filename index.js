@@ -93,7 +93,7 @@ const { Server } = require('ws');
 const wss = new Server({ server });
 
 wss.on('connection', (ws) => {
-  console.log('Client connected');
+  console.log('New client connected');
   ws.on('message', data => onMessage(ws, data));
   ws.on('close', () => {
       ws.send('closed');
