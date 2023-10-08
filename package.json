@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "old.js",
-  "scripts": {
+  "engines": {
+    "node": "16.20.2"
+  },"scripts": {
     "start": "node -r dotenv/config index"
   },
   "keywords": [],
