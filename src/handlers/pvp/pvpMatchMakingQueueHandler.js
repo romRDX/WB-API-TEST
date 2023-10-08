@@ -17,18 +17,19 @@ const pvpMatchMakingQueueHandler = async (ws, battleData) => {
 
             const getCharactersData = async (userId) => {
                 try {
+                    console.log("---------------------------------------------------------AAA: ", );
                     const resp = await apiWB.get('/characters', {
                         params: {
                             userId,
                         }
                     });
-        
+                    console.log("---------------------------------------------------------BBB: ", resp);
                     return resp;
                 } catch (err){
                     console.log("ERROR: ", err);
                 }
             };
-        
+            
             const playerCharactersData = await getCharactersData(battleData.playerId);
             const selectedCharacter = playerCharactersData.data.userCharacters.find((char) => char.id == battleData.characterId);
             const playerCharacter = selectedCharacter;
